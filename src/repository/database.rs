@@ -28,4 +28,9 @@ impl Database {
         todos.push(todo.clone());
         Ok(todo)
     }
+
+    pub fn get_todos(&self) -> Vec<Todo>{
+        let todos = self.todos.lock().unwrap();
+        todos.clone()
+    }
 }
