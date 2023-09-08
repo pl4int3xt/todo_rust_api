@@ -36,6 +36,9 @@ async fn not_found() -> Result<HttpResponse>{
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()>{
+    let todo_db = repository::database::Database::new();
+    let app_data = web::Data::new(todo_db);
+
     if std::env::var_os("RUST_LOG").is_none(){
         std::env::set_var("RUST_LOG", "actix_web=info");
     }
@@ -45,6 +48,8 @@ async fn main() -> std::io::Result<()>{
 
     HttpServer::new( move || {
         App::new()
+            .app_data(app_data.clone())
+            .configure(api::api::config)
             .service(health_checker_handler)
             .default_service(web::route().to(not_found))
             .wrap(Logger::default())
