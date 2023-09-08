@@ -14,9 +14,9 @@ impl Database {
         Database { todos }
     }
 
-    pub fn crete_todo(&self, todo:Todo) -> Result<Todo, Error>{
+    pub fn create_todo(&self, todo:Todo) -> Result<Todo, Error>{
         let mut todos = self.todos.lock().unwrap();
-        let id = uuid::Uuid::new_v4();
+        let id = uuid::Uuid::new_v4().to_string();
         let created_at = Utc::now();
         let updated_at = Utc::now();
         let todo = Todo{
@@ -25,7 +25,7 @@ impl Database {
             updated_at: Some(updated_at),
             ..todo
         };
-        todo.push(todo.clone());
+        todos.push(todo.clone());
         Ok(todo)
     }
 }
