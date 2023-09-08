@@ -15,15 +15,15 @@ pub async fn create_todo(db: Data<Database>, new_todo: Json<Todo>) -> HttpRespon
 }
 
 #[get("/todos")]
-pub async fn get_todos(db: Data<Database>) -> HttpResponse {
+pub async fn get_todos(db: web::Data<Database>) -> HttpResponse {
     let todos = db.get_todos();
     HttpResponse::Ok().json(todos)
-
 }
 
 pub fn config(cfg: &mut web::ServiceConfig){
     cfg.service(
         web::scope("/api")
             .service(create_todo)
+            .service(get_todos)
     );
 }
