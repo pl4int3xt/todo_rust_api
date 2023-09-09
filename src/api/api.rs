@@ -3,6 +3,7 @@ use actix_web::{web::{
     Data,
     Json,
 }, post, HttpResponse};
+use crate::models::todo;
 use crate::{models::todo::Todo, repository::database::Database};
 
 #[post("/todos")]
@@ -20,10 +21,22 @@ pub async fn get_todos(db: web::Data<Database>) -> HttpResponse {
     HttpResponse::Ok().json(todos)
 }
 
+#[get("/todos/{id}")]
+pub async fn get_todo_by_id(db: web::Data<Database>, id: web::Path<String>) -> HttpResponse {
+    let todo = db.get_todo_by_id(&id);
+
+    match todo {
+        Some(todo) => HttpResponse::Ok().json(todo),
+        None => HttpResponse::NotFound().body("Todo Not Found")
+    }
+}
+
+
 pub fn config(cfg: &mut web::ServiceConfig){
     cfg.service(
         web::scope("/api")
             .service(create_todo)
             .service(get_todos)
+            .service(get_todo_by_id)
     );
 }

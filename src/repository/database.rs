@@ -33,4 +33,9 @@ impl Database {
         let todos = self.todos.lock().unwrap();
         todos.clone()
     }
+
+    pub fn get_todo_by_id(&self, id: &str) -> Option<Todo>{
+        let todos = self.todos.lock().unwrap();
+        todos.iter().find(|todo| todo.id == Some(id.to_string())).cloned()
+    }
 }
