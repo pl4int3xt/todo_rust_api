@@ -1,6 +1,6 @@
 # Todo Rust api
 Get ready to rustle up some todos with our Rust-powered API! Actix Web brings the speed, and Rust ensures our code is as safe as a vault. Our API will so fast that we have to rewrite the laws of physics in Rust and Actix Web just to keep up with it! 🚀😄
-# dependecies
+# Dependencies
 ```toml
 actix-cors = "0.6.4"
 actix-web = "4.4.0"
