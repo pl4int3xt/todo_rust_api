@@ -54,6 +54,7 @@ pub fn config(cfg: &mut web::ServiceConfig){
         web::scope("/api")
             .service(create_todo)
             .service(get_todos)
+            .service(update_todo_by_id)
             .service(get_todo_by_id)
             .service(delete_todo_by_id)
     );
