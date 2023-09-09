@@ -1,5 +1,5 @@
 use actix_web::body::None;
-use actix_web::web;
+use actix_web::{web, delete};
 use actix_web::{web::{
     Data,
     Json,
@@ -41,11 +41,22 @@ pub async fn update_todo_by_id(db: web::Data<Database>, id: web::Path<String>, u
     }
 }
 
+#[delete("/todos/{id}")]
+pub async fn delete_todo_by_id(db: web::Data<Database>, id: web::Path<String>) -> HttpResponse {
+    let todo = db.delete_todo_by_id(&id);
+    match todo {
+        Some(todo) => HttpResponse::Ok().json(todo),
+        None => HttpResponse::NotFound().body("Todo Not Found"),
+    }
+}
+
+
 pub fn config(cfg: &mut web::ServiceConfig){
     cfg.service(
         web::scope("/api")
             .service(create_todo)
             .service(get_todos)
             .service(get_todo_by_id)
+            .service(delete_todo_by_id)
     );
 }
