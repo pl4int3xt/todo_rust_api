@@ -1,10 +1,8 @@
-use actix_web::body::None;
-use actix_web::{web, delete};
+use actix_web::{web, delete, get, put};
 use actix_web::{web::{
     Data,
     Json,
 }, post, HttpResponse};
-use crate::models::todo;
 use crate::{models::todo::Todo, repository::database::Database};
 
 #[post("/todos")]
