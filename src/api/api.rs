@@ -1,3 +1,4 @@
+use actix_web::body::None;
 use actix_web::web;
 use actix_web::{web::{
     Data,
@@ -31,6 +32,14 @@ pub async fn get_todo_by_id(db: web::Data<Database>, id: web::Path<String>) -> H
     }
 }
 
+#[put("/todos/{id}")]
+pub async fn update_todo_by_id(db: web::Data<Database>, id: web::Path<String>, updated_todo: web::Json<Todo>) -> HttpResponse {
+    let todo = db.update_todo_by_id(&id, updated_todo.into_inner());
+    match todo {
+        Some(todo) => HttpResponse::Ok().json(todo),
+        None => HttpResponse::NotFound().body("Todo Not Found")
+    }
+}
 
 pub fn config(cfg: &mut web::ServiceConfig){
     cfg.service(
